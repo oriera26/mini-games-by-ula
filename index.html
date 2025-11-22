@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO & Metadades -->
+    <title>Descarrega MiniGames by Ula - La teva arcade offline</title>
+    <meta name="description" content="Descarrega la col·lecció definitiva de més de 200 minijocs per a Windows. Sense anuncis, sense internet, pura diversió.">
+    <meta property="og:title" content="MiniGames by Ula - Arcade Portàtil">
+    <meta property="og:image" content="https://via.placeholder.com/1200x630.png?text=MiniGames+Preview">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        arcade: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            400: '#38bdf8', 
+                            500: '#0ea5e9', // Blau principal
+                            600: '#0284c7',
+                            900: '#0c4a6e',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Segoe UI', 'Roboto', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'hero-pattern': "linear-gradient(135deg, #eef2f3 0%, #8e9eab 100%)",
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Tipografia -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        
+        /* Efecte Glassmorphism subtil per targetes */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased flex flex-col min-h-screen selection:bg-arcade-400 selection:text-white">
+
+    <!-- Navegació -->
+    <header class="fixed w-full top-0 z-50 transition-all duration-300 bg-white/80 backdrop-blur-md border-b border-slate-200">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-arcade-400 to-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-lg">M</div>
+                <span class="font-bold text-xl tracking-tight text-slate-900">MiniGames <span class="font-normal text-slate-500 text-sm">by Ula</span></span>
+            </div>
+            
+            <!-- Selector d'idioma -->
+            <div class="flex items-center gap-1 text-sm font-medium bg-slate-100 p-1 rounded-lg">
+                <button onclick="setLanguage('ca')" class="lang-btn px-3 py-1 rounded-md transition-colors text-arcade-600 bg-white shadow-sm" data-lang="ca">CA</button>
+                <button onclick="setLanguage('es')" class="lang-btn px-3 py-1 rounded-md transition-colors text-slate-500 hover:text-slate-700" data-lang="es">ES</button>
+                <button onclick="setLanguage('en')" class="lang-btn px-3 py-1 rounded-md transition-colors text-slate-500 hover:text-slate-700" data-lang="en">EN</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-24">
+        <!-- Hero Section -->
+        <section class="max-w-6xl mx-auto px-4 sm:px-6 py-12 lg:py-20 grid lg:grid-cols-2 gap-12 items-center">
+            <div class="order-2 lg:order-1">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold mb-6 border border-blue-100 uppercase tracking-wide">
+                    <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                    v1.1 Disponible
+                </div>
+                
+                <h1 class="text-5xl lg:text-6xl font-black text-slate-900 leading-tight mb-6 tracking-tight" data-i18n="hero_title">
+                    La teva col·lecció <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-arcade-500 to-indigo-600">d'Arcade Offline</span>
+                </h1>
+                
+                <p class="text-lg text-slate-600 mb-8 leading-relaxed max-w-lg" data-i18n="hero_subtitle">
+                    Accedeix a més de 200 jocs clàssics i moderns sense necessitat d'internet. Minecraft, 2048, Doom i molt més en una sola app portàtil.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4 mb-8">
+                    <a href="#" onclick="downloadApp()" class="group relative inline-flex justify-center items-center px-8 py-4 bg-slate-900 text-white font-bold rounded-xl shadow-xl shadow-blue-900/20 hover:bg-slate-800 hover:-translate-y-1 transition-all overflow-hidden">
+                        <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
+                        <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 20 20"><path d="M14.707 7.707a1 1 0 01-1.414 0L10 4.414V14a1 1 0 11-2 0V4.414L4.707 7.707a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" transform="rotate(180 10 10)"></path></svg>
+                        <span class="flex flex-col items-start text-left leading-none">
+                            <span class="text-xs font-medium text-slate-400 mb-1">Windows 10 / 11</span>
+                            <span data-i18n="download_btn">Descarrega Gratis</span>
+                        </span>
+                    </a>
+                    <div class="flex items-center gap-4 text-sm text-slate-500 px-2">
+                        <div class="flex flex-col">
+                            <span class="font-bold text-slate-900">216 MB</span>
+                            <span>MiniGamesByUla.exe</span>
+                        </div>
+                        <div class="w-px h-8 bg-slate-200"></div>
+                        <div class="flex flex-col">
+                            <span class="font-bold text-slate-900">100% Net</span>
+                            <span data-i18n="no_ads">Sense Anuncis</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visual de l'App (Mockup) -->
+            <div class="order-1 lg:order-2 relative perspective-1000">
+                <div class="absolute -inset-4 bg-gradient-to-r from-arcade-400 to-indigo-400 rounded-full blur-3xl opacity-20 animate-pulse"></div>
+                
+                <div class="relative animate-float transform rotate-y-12 rotate-x-6 transition-transform duration-500 hover:rotate-0">
+                    <!-- Finestra de l'App -->
+                    <div class="glass-panel rounded-2xl p-2 shadow-2xl">
+                        <div class="bg-slate-900 rounded-xl overflow-hidden aspect-[16/10] border border-slate-700/50 relative">
+                            <!-- Barra de títol falsa -->
+                            <div class="h-8 bg-slate-800 flex items-center px-3 gap-2">
+                                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                            </div>
+                            <!-- Contingut Mock (Grid de jocs) -->
+                            <div class="p-4 grid grid-cols-4 gap-3 opacity-80">
+                                <div class="aspect-square rounded-lg bg-gradient-to-br from-pink-500 to-rose-500"></div>
+                                <div class="aspect-square rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500"></div>
+                                <div class="aspect-square rounded-lg bg-gradient-to-br from-green-500 to-emerald-500"></div>
+                                <div class="aspect-square rounded-lg bg-gradient-to-br from-purple-500 to-indigo-500"></div>
+                                <div class="aspect-square rounded-lg bg-slate-700"></div>
+                                <div class="aspect-square rounded-lg bg-slate-700"></div>
+                                <div class="aspect-square rounded-lg bg-slate-700"></div>
+                                <div class="aspect-square rounded-lg bg-slate-700"></div>
+                            </div>
+                            <!-- Overlay de text -->
+                            <div class="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[2px]">
+                                <div class="text-white text-center">
+                                    <p class="text-2xl font-bold">MiniGames APP</p>
+                                    <p class="text-sm opacity-80">Vista prèvia de l'aplicació</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section class="bg-white py-16 border-y border-slate-100">
+            <div class="max-w-6xl mx-auto px-4">
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-lg transition-shadow">
+                        <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-4 text-2xl">🚀</div>
+                        <h3 class="text-xl font-bold mb-2 text-slate-900" data-i18n="feat1_title">Rendiment Instantani</h3>
+                        <p class="text-slate-600" data-i18n="feat1_desc">Sense instal·lacions llargues. Obre l'executable i juga a l'instant. Optimitzat per a PCs de gamma baixa.</p>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-lg transition-shadow">
+                        <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center mb-4 text-2xl">🎮</div>
+                        <h3 class="text-xl font-bold mb-2 text-slate-900" data-i18n="feat2_title">Mode Offline</h3>
+                        <p class="text-slate-600" data-i18n="feat2_desc">Porta els jocs on vulguis. Un cop descarregada, l'app no necessita internet per funcionar.</p>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-lg transition-shadow">
+                        <div class="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center mb-4 text-2xl">🛡️</div>
+                        <h3 class="text-xl font-bold mb-2 text-slate-900" data-i18n="feat3_title">Segur i Net</h3>
+                        <p class="text-slate-600" data-i18n="feat3_desc">Codi obert i transparent. Sense rastrejadors, sense anuncis intrusius i lliure de virus.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Guia d'Instal·lació (SmartScreen) -->
+        <section class="max-w-4xl mx-auto px-4 py-16">
+            <h2 class="text-3xl font-bold text-center mb-10 text-slate-900" data-i18n="install_title">Instal·lació sense problemes</h2>
+            
+            <div class="bg-amber-50 border border-amber-200 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row gap-6 items-start shadow-sm">
+                <div class="flex-shrink-0">
+                    <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-2xl font-bold">!</div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2" data-i18n="smartscreen_title">Veus una pantalla blava "SmartScreen"?</h3>
+                    <p class="text-slate-700 mb-4" data-i18n="smartscreen_desc">
+                        Com que som desenvolupadors independents i no una gran corporació, Windows pot mostrar un avís de seguretat preventiu. És totalment normal i no t'has de preocupar.
+                    </p>
+                    <div class="bg-white p-4 rounded-xl border border-amber-100 text-sm text-slate-600">
+                        <ol class="list-decimal list-inside space-y-2">
+                            <li data-i18n="step1">Fes clic a l'enllaç <span class="font-semibold underline">Més informació</span>.</li>
+                            <li data-i18n="step2">Prem el botó <span class="font-semibold border px-1 rounded bg-slate-100">Executa igualment</span> que apareixerà a sota.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Compacte -->
+        <section class="max-w-3xl mx-auto px-4 pb-20">
+            <h2 class="text-2xl font-bold mb-6 text-slate-900">Preguntes Freqüents</h2>
+            <div class="space-y-3">
+                <details class="group bg-white border border-slate-200 rounded-xl overflow-hidden transition-all hover:border-arcade-400">
+                    <summary class="flex justify-between items-center p-4 cursor-pointer font-medium text-slate-800">
+                        <span data-i18n="faq1_q">És gratuït?</span>
+                        <span class="transition-transform group-open:rotate-180">▼</span>
+                    </summary>
+                    <div class="p-4 pt-0 text-slate-600 text-sm leading-relaxed" data-i18n="faq1_a">
+                        Sí, 100% gratuït. És un projecte personal per preservar jocs flash i HTML5.
+                    </div>
+                </details>
+                <details class="group bg-white border border-slate-200 rounded-xl overflow-hidden transition-all hover:border-arcade-400">
+                    <summary class="flex justify-between items-center p-4 cursor-pointer font-medium text-slate-800">
+                        <span data-i18n="faq2_q">Com actualitzo els jocs?</span>
+                        <span class="transition-transform group-open:rotate-180">▼</span>
+                    </summary>
+                    <div class="p-4 pt-0 text-slate-600 text-sm leading-relaxed" data-i18n="faq2_a">
+                        L'aplicació busca actualitzacions automàticament quan tens internet. Si hi ha jocs nous, apareixeran sols.
+                    </div>
+                </details>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <p class="mb-4">&copy; 2025 MiniGames by Ula. Made with ❤️ for gamers.</p>
+            <div class="flex justify-center gap-6 text-sm">
+                <a href="#" class="hover:text-white transition-colors">Contacte</a>
+                <a href="#" class="hover:text-white transition-colors">GitHub</a>
+                <a href="#" class="hover:text-white transition-colors">Privacitat</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- Traduccions ---
+        const i18n = {
+            ca: {
+                hero_title: `La teva col·lecció <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-arcade-500 to-indigo-600">d'Arcade Offline</span>`,
+                hero_subtitle: "Accedeix a més de 200 jocs clàssics i moderns sense necessitat d'internet. Minecraft, 2048, Doom i molt més en una sola app portàtil.",
+                download_btn: "Descarrega Gratis",
+                no_ads: "Sense Anuncis",
+                feat1_title: "Rendiment Instantani",
+                feat1_desc: "Sense instal·lacions llargues. Obre l'executable i juga a l'instant. Optimitzat per a PCs de gamma baixa.",
+                feat2_title: "Mode Offline",
+                feat2_desc: "Porta els jocs on vulguis. Un cop descarregada, l'app no necessita internet per funcionar.",
+                feat3_title: "Segur i Net",
+                feat3_desc: "Codi obert i transparent. Sense rastrejadors, sense anuncis intrusius i lliure de virus.",
+                install_title: "Instal·lació sense problemes",
+                smartscreen_title: 'Veus una pantalla blava "SmartScreen"?',
+                smartscreen_desc: "Com que som desenvolupadors independents, Windows pot mostrar un avís de seguretat preventiu. És totalment normal.",
+                step1: 'Fes clic a l\'enllaç <span class="font-semibold underline">Més informació</span>.',
+                step2: 'Prem el botó <span class="font-semibold border px-1 rounded bg-slate-100">Executa igualment</span>.',
+                faq1_q: "És gratuït?",
+                faq1_a: "Sí, 100% gratuït. És un projecte personal per preservar jocs flash i HTML5.",
+                faq2_q: "Com actualitzo els jocs?",
+                faq2_a: "L'aplicació busca actualitzacions automàticament quan tens internet."
+            },
+            es: {
+                hero_title: `Tu colección <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-arcade-500 to-indigo-600">de Arcade Offline</span>`,
+                hero_subtitle: "Accede a más de 200 juegos clásicos y modernos sin necesidad de internet. Minecraft, 2048, Doom y mucho más en una sola app portátil.",
+                download_btn: "Descarga Gratis",
+                no_ads: "Sin Anuncios",
+                feat1_title: "Rendimiento Instantáneo",
+                feat1_desc: "Sin instalaciones largas. Abre el ejecutable y juega al instante. Optimizado para PCs de gama baja.",
+                feat2_title: "Modo Offline",
+                feat2_desc: "Lleva los juegos donde quieras. Una vez descargada, la app no necesita internet para funcionar.",
+                feat3_title: "Seguro y Limpio",
+                feat3_desc: "Código abierto y transparente. Sin rastreadores, sin anuncios intrusivos y libre de virus.",
+                install_title: "Instalación sin problemas",
+                smartscreen_title: '¿Ves una pantalla azul "SmartScreen"?',
+                smartscreen_desc: "Al ser desarrolladores independientes, Windows puede mostrar un aviso de seguridad preventivo. Es totalmente normal.",
+                step1: 'Haz clic en el enlace <span class="font-semibold underline">Más información</span>.',
+                step2: 'Pulsa el botón <span class="font-semibold border px-1 rounded bg-slate-100">Ejecutar de todos modos</span>.',
+                faq1_q: "¿Es gratuito?",
+                faq1_a: "Sí, 100% gratuito. Es un proyecto personal para preservar juegos flash y HTML5.",
+                faq2_q: "¿Cómo actualizo los juegos?",
+                faq2_a: "La aplicación busca actualizaciones automáticamente cuando tienes internet."
+            },
+            en: {
+                hero_title: `Your Offline <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-arcade-500 to-indigo-600">Arcade Collection</span>`,
+                hero_subtitle: "Access over 200 classic and modern games without internet. Minecraft, 2048, Doom and more in a single portable app.",
+                download_btn: "Download Free",
+                no_ads: "No Ads",
+                feat1_title: "Instant Performance",
+                feat1_desc: "No long installations. Open the executable and play instantly. Optimized for low-end PCs.",
+                feat2_title: "Offline Mode",
+                feat2_desc: "Take games anywhere. Once downloaded, the app doesn't need internet to run.",
+                feat3_title: "Safe & Clean",
+                feat3_desc: "Open source and transparent. No trackers, no intrusive ads, and virus-free.",
+                install_title: "Trouble-free Installation",
+                smartscreen_title: 'Seeing a blue "SmartScreen"?',
+                smartscreen_desc: "As independent developers, Windows might show a preventive security warning. This is completely normal.",
+                step1: 'Click the <span class="font-semibold underline">More info</span> link.',
+                step2: 'Click the <span class="font-semibold border px-1 rounded bg-slate-100">Run anyway</span> button.',
+                faq1_q: "Is it free?",
+                faq1_a: "Yes, 100% free. It's a personal project to preserve flash and HTML5 games.",
+                faq2_q: "How do I update games?",
+                faq2_a: "The app checks for updates automatically when you have internet."
+            }
+        };
+
+        function setLanguage(lang) {
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18n[lang][key]) {
+                    el.innerHTML = i18n[lang][key];
+                }
+            });
+
+            // Actualitzar estat botons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                if(btn.dataset.lang === lang) {
+                    btn.className = "lang-btn px-3 py-1 rounded-md transition-colors text-arcade-600 bg-white shadow-sm font-bold";
+                } else {
+                    btn.className = "lang-btn px-3 py-1 rounded-md transition-colors text-slate-500 hover:text-slate-700";
+                }
+            });
+        }
+
+        // Detectar idioma navegador
+        const userLang = navigator.language.startsWith('es') ? 'es' : (navigator.language.startsWith('en') ? 'en' : 'ca');
+        setLanguage(userLang);
+
+        function downloadApp() {
+            // Aquí aniria l'enllaç real al fitxer .exe
+            alert("Simulació: Descarregant MiniGames-Setup-v2.4.0.exe ...");
+        }
+    </script>
+</body>
+</html>
