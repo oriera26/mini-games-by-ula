@@ -97,11 +97,11 @@
                     </p>
 
                     <!-- ÀREA DINÀMICA DE DESCÀRREGA -->
-                    <div class="relative w-full max-w-md min-h-[180px]">
+                    <div class="relative w-full max-w-md min-h-[120px]">
                         
                         <!-- 1. ESTAT INICIAL: Botó -->
                         <div id="initialState" class="transition-all duration-300">
-                            <button onclick="secureDownload()" class="w-full group relative flex justify-center items-center px-8 py-5 bg-slate-900 text-white font-bold rounded-2xl shadow-xl hover:bg-slate-800 hover:-translate-y-1 hover:shadow-2xl transition-all">
+                            <button onclick="initiateExternalDownload()" class="w-full group relative flex justify-center items-center px-8 py-5 bg-slate-900 text-white font-bold rounded-2xl shadow-xl hover:bg-slate-800 hover:-translate-y-1 hover:shadow-2xl transition-all">
                                 <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
                                 <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                                 <span class="flex flex-col items-start text-left leading-none">
@@ -116,22 +116,18 @@
                             </div>
                         </div>
 
-                        <!-- 2. ESTAT PROCÉS: Barra de Progrés -->
-                        <div id="downloadProgress" class="hidden bg-white border border-slate-200 p-6 rounded-2xl shadow-lg">
-                            <div class="flex justify-between text-sm font-bold mb-3">
-                                <span id="statusText" class="text-slate-700">Connectant al servidor segur...</span>
-                                <span id="percentText" class="text-arcade-600">0%</span>
+                        <!-- 2. ESTAT DE PROCÉS (Sense barra) -->
+                        <div id="downloadMessage" class="hidden bg-blue-50 border border-blue-200 p-4 rounded-xl shadow-md transition-all duration-300">
+                            <div class="flex items-center gap-3">
+                                <svg class="w-5 h-5 text-blue-600 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m15.356-2H21v5.437m0 0v5.437M3 12h.01"></path></svg>
+                                <span class="font-medium text-blue-800">Iniciant descàrrega... Revisa la teva carpeta de baixades.</span>
                             </div>
-                            <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden mb-2">
-                                <div id="progressBar" class="bg-gradient-to-r from-arcade-500 to-blue-600 h-3 rounded-full transition-all duration-200 ease-out" style="width: 0%"></div>
-                            </div>
-                            <p class="text-xs text-slate-400 animate-pulse">Encriptant transferència (Blob)...</p>
                         </div>
 
                         <!-- Missatge Error -->
                         <div id="errorMsg" class="hidden p-4 bg-red-50 text-red-700 rounded-xl border border-red-100 text-sm flex items-center gap-3">
                             <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                            <span>Connexió interrompuda. Comprova la teva xarxa i reintenta-ho.</span>
+                            <span>No s'ha pogut iniciar la descàrrega. Comprova la teva xarxa i reintenta-ho.</span>
                         </div>
                     </div>
                 </div>
@@ -155,7 +151,7 @@
         </section>
 
         <!-- SECCIÓ POST-DESCÀRREGA (Oculta inicialment) -->
-        <!-- Aquesta secció apareix només quan el fitxer ja està a l'ordinador de l'usuari -->
+        <!-- Aquesta secció apareix només quan el fitxer ja està a l'ordinador de l'usuari (o s'ha iniciat la descàrrega) -->
         <section id="postDownloadSection" class="hidden max-w-5xl mx-auto px-6 mb-24 scroll-mt-24">
             
             <!-- Missatge d'èxit -->
@@ -163,8 +159,8 @@
                 <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 text-green-600 mb-4">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                 </div>
-                <h2 class="text-3xl font-bold text-slate-900">Descàrrega Completada!</h2>
-                <p class="text-slate-600 mt-2">El fitxer <span class="font-mono bg-slate-100 px-2 py-0.5 rounded text-slate-800">MiniGames-Installer.exe</span> ja és al teu ordinador.</p>
+                <h2 class="text-3xl font-bold text-slate-900">Descàrrega Iniciada!</h2>
+                <p class="text-slate-600 mt-2">Ara, segueix aquests passos per a una <span class="font-semibold text-slate-800">instal·lació 100% segura</span>.</p>
             </div>
 
             <div class="grid md:grid-cols-2 gap-8 reveal-content" style="animation-delay: 0.2s;">
@@ -235,12 +231,12 @@
                         <h3 class="text-xl font-bold mb-3 text-slate-900">Zero Latència</h3>
                         <p class="text-slate-600 leading-relaxed">Els jocs s'executen localment al teu processador. Sense esperes de càrrega ni lag de xarxa.</p>
                     </div>
-                    <div class="text-center p-6 rounded-2xl hover:bg-slate-50 transition-colors">
+                    <div class="text-center p-6 rounded-2xl hover:bg-purple-50 transition-colors">
                         <div class="w-16 h-16 mx-auto bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center mb-6 text-3xl">📡</div>
                         <h3 class="text-xl font-bold mb-3 text-slate-900">100% Offline</h3>
                         <p class="text-slate-600 leading-relaxed">Porta el teu portàtil a un avió o a un búnquer. MiniGames funcionarà perfectament sense WiFi.</p>
                     </div>
-                    <div class="text-center p-6 rounded-2xl hover:bg-slate-50 transition-colors">
+                    <div class="text-center p-6 rounded-2xl hover:bg-green-50 transition-colors">
                         <div class="w-16 h-16 mx-auto bg-green-100 text-green-600 rounded-2xl flex items-center justify-center mb-6 text-3xl">🛡️</div>
                         <h3 class="text-xl font-bold mb-3 text-slate-900">Privacitat Total</h3>
                         <p class="text-slate-600 leading-relaxed">Sense telemetria, sense comptes d'usuari i sense anuncis. Les teves partides són teves.</p>
@@ -289,90 +285,60 @@
     </footer>
 
     <script>
-        // --- CONFIGURACIÓ DE SEGURETAT (CANVIA EL NOM DEL FITXER AQUÍ) ---
-        // Puja al GitHub el fitxer amb un nom random, ex: "data-pack-v24.bin"
-        const SECRET_FILE_URL = 'https://www.dropbox.com/scl/fi/bs435mfqzi866s7x77c90/BETA-MINI-GAMES-by-Ula-1.0.exe?rlkey=ekvbgs92r3cie22pz8r4pvcdz&st=wtli6kdx&dl=1'; 
-        const FINAL_FILENAME = 'Mini Games by Ula Setup-v1.1.exe'; 
+        // --- CONFIGURACIÓ DE DESCÀRREGA EXTERNA ---
+        // La vostra URL de Dropbox amb dl=1 (descàrrega forçada)
+        const DROPBOX_URL = 'https://www.dropbox.com/scl/fi/bs435mfqzi866s7x77c90/BETA-MINI-GAMES-by-Ula-1.0.exe?rlkey=ekvbgs92r3cie22pz8r4pvcdz&st=wtli6kdx&dl=1'; 
+        const FINAL_FILENAME = 'MiniGames-Installer.exe'; 
 
-        async function secureDownload() {
+        function initiateExternalDownload() {
             const initialUI = document.getElementById('initialState');
-            const progressUI = document.getElementById('downloadProgress');
+            const downloadMessageUI = document.getElementById('downloadMessage');
             const postDownloadSection = document.getElementById('postDownloadSection');
-            
-            const progressBar = document.getElementById('progressBar');
-            const percentText = document.getElementById('percentText');
-            const statusText = document.getElementById('statusText');
             const errorMsg = document.getElementById('errorMsg');
 
-            // 1. Canvi d'Estat: Amagar botó, mostrar barra
+            // 1. Amagar botó, mostrar missatge d'inici
             initialUI.classList.add('hidden');
-            progressUI.classList.remove('hidden');
+            downloadMessageUI.classList.remove('hidden');
             errorMsg.classList.add('hidden');
             
+            // 2. Iniciar la descàrrega real (no es pot capturar el final)
             try {
-                const response = await fetch(SECRET_FILE_URL);
-                if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+                const downloadLink = document.createElement('a');
+                downloadLink.href = DROPBOX_URL;
+                downloadLink.download = FINAL_FILENAME; // Nom desitjat
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
 
-                const contentLength = response.headers.get('content-length');
-                const total = parseInt(contentLength, 10);
-                let loaded = 0;
-
-                const reader = response.body.getReader();
-                const chunks = [];
-
-                while (true) {
-                    const { done, value } = await reader.read();
-                    if (done) break;
-                    chunks.push(value);
-                    loaded += value.length;
-
-                    if (total) {
-                        const percent = Math.round((loaded / total) * 100);
-                        progressBar.style.width = `${percent}%`;
-                        percentText.innerText = `${percent}%`;
-                    }
-                }
-
-                // 2. Preparar fitxer
-                statusText.innerText = "Verificant integritat...";
-                const blob = new Blob(chunks);
-                const blobUrl = window.URL.createObjectURL(blob);
-
-                // 3. Descàrrega
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = blobUrl;
-                a.download = FINAL_FILENAME;
-                document.body.appendChild(a);
-                a.click();
-                
-                // 4. TRANSICIÓ FINAL: Mostrar la informació de seguretat
-                setTimeout(() => {
-                    window.URL.revokeObjectURL(blobUrl);
-                    document.body.removeChild(a);
-                    
-                    // Amagar la barra de progrés
-                    progressUI.classList.add('hidden');
-                    
-                    // MOSTRAR LA SECCIÓ DE SEGURETAT I INSTRUCCIONS
-                    postDownloadSection.classList.remove('hidden');
-                    
-                    // Fer scroll suau cap a la informació nova
-                    postDownloadSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-                }, 800); // Petit delay per UX
+                // 3. Temporitzador per revelar la secció de seguretat
+                // Donem un temps mínim per assegurar que la descàrrega s'ha iniciat
+                setTimeout(showPostDownload, 2000); 
 
             } catch (err) {
-                console.error(err);
-                progressUI.classList.add('hidden');
+                console.error("Error durant l'intent de descàrrega:", err);
+                downloadMessageUI.classList.add('hidden');
                 errorMsg.classList.remove('hidden');
                 
-                // Si falla, tornem a mostrar el botó al cap de 3 segons
+                // Si falla, tornem a mostrar el botó al cap de 4 segons
                 setTimeout(() => {
                     errorMsg.classList.add('hidden');
                     initialUI.classList.remove('hidden');
                 }, 4000);
             }
+        }
+        
+        function showPostDownload() {
+            const downloadMessageUI = document.getElementById('downloadMessage');
+            const postDownloadSection = document.getElementById('postDownloadSection');
+            
+            // Amagar el missatge d'inici
+            downloadMessageUI.classList.add('hidden');
+            
+            // MOSTRAR LA SECCIÓ DE SEGURETAT I INSTRUCCIONS
+            postDownloadSection.classList.remove('hidden');
+            
+            // Fer scroll suau cap a la informació nova
+            postDownloadSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     </script>
 </body>
